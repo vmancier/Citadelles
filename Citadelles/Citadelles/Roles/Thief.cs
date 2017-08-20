@@ -4,13 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Citadelles
+namespace Citadelles.Roles
 {
-    class Program
+    class Thief : Role
     {
-        static void Main(string[] args)
+        public Thief() : base(2, "Voleur")
         {
-            Game game = new Game(6);
+
+        }
+
+        public override void Effect()
+        {
+
         }
     }
 }

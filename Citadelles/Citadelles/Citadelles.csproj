@@ -49,6 +49,14 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="Roles\Architect.cs" />
+    <Compile Include="Roles\Assassin.cs" />
+    <Compile Include="Roles\Bishop.cs" />
+    <Compile Include="Roles\King.cs" />
+    <Compile Include="Roles\Magician.cs" />
+    <Compile Include="Roles\Merchant.cs" />
+    <Compile Include="Roles\Thief.cs" />
+    <Compile Include="Roles\Warlord.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
