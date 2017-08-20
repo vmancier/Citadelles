@@ -63,6 +63,18 @@ namespace Citadelles
                 _crown = value;
             }
         }
+        internal Role Role
+        {
+            get
+            {
+                return _role;
+            }
+
+            set
+            {
+                _role = value;
+            }
+        }
 
         public Player(bool crown)
         {
@@ -82,5 +94,19 @@ namespace Citadelles
             _hand.Add(cards.ElementAt(index));
             cards.RemoveAt(index);
         }
+
+        // Le joueur chosit un des roles restant
+        public void ChooseRole()
+        {
+
+        }
+
+        //Tour de jeu du joueur
+        public void Turn()
+        {
+
+        }
+
+
     }
 }

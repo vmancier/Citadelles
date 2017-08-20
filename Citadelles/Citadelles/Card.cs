@@ -63,6 +63,12 @@ namespace Citadelles
 
         }
 
+        public override string ToString()
+        {
+            string text = Name+"  "+ Cost +"PO  "+ Color.ToString();
+            return text;
+        }
+
         public static Card Temple()
         {
             return new Card("Temple", 1, Colors.Blue);

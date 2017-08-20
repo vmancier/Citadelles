@@ -7,18 +7,18 @@ using Citadelles.Roles;
 
 namespace Citadelles
 {
-    public enum States { PLAYING, FINISH };
-
     public class Game
     {
         private List<Card> _library;
         private List<Player> _players;
-        private States _state;
+        private List<Role> _roles;
         private int _nbPlayers;
 
         public Game(int nbPlayers)
         {
             _nbPlayers = nbPlayers;
+            _roles = new List<Role>();
+
             Init();
             Play();
 
@@ -136,8 +136,91 @@ namespace Citadelles
         }
 
         //Fontion de jeu
-        public void Play(){
+        public void Play()
+        {
+            do
+            {
+                LoadRoles();
+                BanRole();
+                DraftRoles();
+
+
+            }
+            while(PlayingGame());
+        }
+
+        //Initialise les roles au début du tour 
+        public void LoadRoles()
+        {
+            _roles.Clear();
+            _roles.Add(new Assassin());
+            _roles.Add(new Thief());
+            _roles.Add(new Magician());
+            _roles.Add(new King());
+            _roles.Add(new Bishop());
+            _roles.Add(new Merchant());
+            _roles.Add(new Architect());
+            _roles.Add(new Warlord());
+        }
+
+        //Vérifie les conditions de victoire
+        public bool PlayingGame()
+        {
+            // A faire
+            // Vérifier si la Merveille qui permet de gagner en 7 tours est présente
+
+            int nbCardsOnBoard = 8;
+
+            foreach(Player player in _players)
+            {
+                if(player.Board.Count == nbCardsOnBoard)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //Ban  un role du jeu pour ce tour
+        public void BanRole()
+        {
+            Random rnd = new Random();
+            int index = rnd.Next(_roles.Count);
+            _roles.RemoveAt(index);
+        }
+
+        //Cherche l'index du joueur avec la couronne
+        public int GetCrown()
+        {
+            int crownIndex = 0;
+            for (int i = 0; i < _players.Count; i++)
+            {
+                if (_players.ElementAt(i).Crown)
+                {
+                    crownIndex = i;
+                }
+            }
+            return crownIndex;
 
         }
+
+        //Les joueurs choisissent un role en commençant par celui qui a la couronne
+        public void DraftRoles()
+        {
+            int crownIndex = GetCrown();
+
+            for (int i = crownIndex; i < _players.Count; i++)
+            {
+                _players.ElementAt(i).ChooseRole();
+
+            }
+
+            for (int i = 0; i < crownIndex; i++)
+            {
+                _players.ElementAt(i).ChooseRole();
+            }
+        }
+
     }
 }
