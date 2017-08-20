@@ -6,21 +6,45 @@ using System.Threading.Tasks;
 
 namespace Citadelles
 {
-    public enum States{PLAYING, FINISH};
+    public enum States { PLAYING, FINISH };
 
     public class Game
     {
         private List<Card> _library;
+        private List<Player> _players;
         private States _state;
 
         public Game()
         {
-            LoadLibrary();
-            Console.WriteLine(_library.Count);
-            Console.ReadLine();
+            Init(5);
             //créer les cartes et les mettres dans la librairy
             //Créer les joueurs
             //Distribuer les cartes d
+        }
+
+        //Initialise la partie
+        public void Init(int nbPlayers)
+        {
+            LoadLibrary();
+
+            //Création des joueurs
+            _players = new List<Player>();
+            for (int i = 0; i < nbPlayers; i++)
+            {
+                _players.Add(new Player());
+            }
+
+            //Distribution des cartes
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < nbPlayers; j++)
+                {
+                    _players.ElementAt(j).Draw(_library);
+                }
+            }
+
+            Console.WriteLine(_players.ElementAt(4).Hand.Count);
+            Console.Read();
         }
 
         //Initialise le paquet de cartes
@@ -29,10 +53,12 @@ namespace Citadelles
             _library = new List<Card>();
 
             //Cartes Bleues
-            for (int i = 0; i < 3; i++){
+            for (int i = 0; i < 3; i++)
+            {
                 _library.Add(Card.Temple());
             }
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++)
+            {
                 _library.Add(Card.Eglise());
             }
             for (int i = 0; i < 3; i++)
