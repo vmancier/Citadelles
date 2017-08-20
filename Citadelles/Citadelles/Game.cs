@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Citadelles.Roles;
 
 namespace Citadelles
 {
@@ -13,38 +14,39 @@ namespace Citadelles
         private List<Card> _library;
         private List<Player> _players;
         private States _state;
+        private int _nbPlayers;
 
-        public Game()
+        public Game(int nbPlayers)
         {
-            Init(5);
-            //créer les cartes et les mettres dans la librairy
-            //Créer les joueurs
-            //Distribuer les cartes d
+            _nbPlayers = nbPlayers;
+            Init();
+            Play();
+
+            Console.Read();
         }
 
         //Initialise la partie
-        public void Init(int nbPlayers)
+        public void Init()
         {
             LoadLibrary();
 
             //Création des joueurs
             _players = new List<Player>();
-            for (int i = 0; i < nbPlayers; i++)
+            _players.Add(new Player(true));//Assignation de la couronne au premier tour
+            for (int i = 1; i < _nbPlayers; i++)
             {
-                _players.Add(new Player());
+                _players.Add(new Player(false));
             }
 
             //Distribution des cartes
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < nbPlayers; j++)
+                for (int j = 0; j < _nbPlayers; j++)
                 {
                     _players.ElementAt(j).Draw(_library);
                 }
             }
 
-            Console.WriteLine(_players.ElementAt(4).Hand.Count);
-            Console.Read();
         }
 
         //Initialise le paquet de cartes
@@ -130,6 +132,11 @@ namespace Citadelles
 
             //Merveilles
             // A lister
+
+        }
+
+        //Fontion de jeu
+        public void Play(){
 
         }
     }

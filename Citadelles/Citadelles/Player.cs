@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Citadelles.Roles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Citadelles
         private List<Card> _hand;
         private List<Card> _board;
         private Role _role;
+        private bool _crown;
 
         public int Coins
         {
@@ -49,12 +51,25 @@ namespace Citadelles
                 _board = value;
             }
         }
-        
-        public Player()
+        public bool Crown
+        {
+            get
+            {
+                return _crown;
+            }
+
+            set
+            {
+                _crown = value;
+            }
+        }
+
+        public Player(bool crown)
         {
             Coins = 2;
             Hand = new List<Card>();
             Board = new List<Card>();
+            Crown = crown;
         }
 
         // A Modifier !
