@@ -13,10 +13,17 @@ namespace Citadelles.Roles
 
         }
 
+        // Pioche 2 cartes et les met dans sa main
         public override void Effect()
         {
-            Game.GetRole(7).Draw(Game.Library);
-            Game.GetRole(7).Draw(Game.Library);
+            Random rnd = new Random();
+            int index = rnd.Next(Game.Library.Count);
+            Game.GetRole(7).Hand.Add(Game.Library.ElementAt(index));
+            Game.Library.RemoveAt(index);
+
+            index = rnd.Next(Game.Library.Count);
+            Game.GetRole(7).Hand.Add(Game.Library.ElementAt(index));
+            Game.Library.RemoveAt(index);
         }
     }
 }

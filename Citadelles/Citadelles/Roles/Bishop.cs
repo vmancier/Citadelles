@@ -13,6 +13,7 @@ namespace Citadelles.Roles
 
         }
 
+        // Les quartiers Blue sur son Board lui rapportent 1 PO
         public override void Effect()
         {
             Player p =Game.GetRole(5);

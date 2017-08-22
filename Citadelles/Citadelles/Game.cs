@@ -13,6 +13,8 @@ namespace Citadelles
         private static List<Player> _players;
         private static List<Role> _roles;
         private int _nbPlayers;
+        private static bool _winner;
+        private static int _nbCardsOnBoard;
 
         public static List<Card> Library
         {
@@ -50,10 +52,36 @@ namespace Citadelles
                 _roles = value;
             }
         }
+        public static bool Winner
+        {
+            get
+            {
+                return _winner;
+            }
+
+            set
+            {
+                _winner = value;
+            }
+        }
+        public static int NbCardsOnBoard
+        {
+            get
+            {
+                return _nbCardsOnBoard;
+            }
+
+            set
+            {
+                _nbCardsOnBoard = value;
+            }
+        }
 
         public Game(int nbPlayers)
         {
             _nbPlayers = nbPlayers;
+            _winner = false;
+            NbCardsOnBoard = 8;
             Roles = new List<Role>();
 
             Init();
@@ -76,11 +104,14 @@ namespace Citadelles
             }
 
             //Distribution des cartes
+            Random rnd = new Random();
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < _nbPlayers; j++)
                 {
-                    Players.ElementAt(j).Draw(Library);
+                    int index = rnd.Next(Library.Count);
+                    Players.ElementAt(j).Hand.Add(Library.ElementAt(index));
+                    Library.RemoveAt(index);
                 }
             }
 
@@ -204,7 +235,7 @@ namespace Citadelles
             }
             while(PlayingGame());
 
-
+            LeaderBoards();
         }
 
         //Initialise les roles au début du tour 
@@ -234,11 +265,9 @@ namespace Citadelles
             // A faire
             // Vérifier si la Merveille qui permet de gagner en 7 tours est présente
 
-            int nbCardsOnBoard = 8;
-
             foreach(Player player in Players)
             {
-                if(player.Board.Count == nbCardsOnBoard)
+                if(player.Board.Count == _nbCardsOnBoard)
                 {
                     return false;
                 }
@@ -298,6 +327,68 @@ namespace Citadelles
                 }
             }
             return null;
+        }
+
+        // Affiche le classement des scores des joueurs à la fin de la partie
+        public void LeaderBoards()
+        {
+            // Calcul des points de victoires
+            foreach(Player p in Players)
+            {
+                if(p.Board.Count == _nbCardsOnBoard)
+                {
+                    p.VictoryPoints += 2;
+                }
+
+                // OPTIMISABLE
+                //Vérifie que le joueur possède des quartiers des cinq couleurs différentes
+                bool red = false;
+                bool green = false;
+                bool yellow = false;
+                bool blue = false;
+                bool purple = false;
+                foreach (Card c in p.Board)
+                {
+                    p.VictoryPoints += c.Cost;// Le joueur gagne les points de la carte
+
+                    switch (c.Color)
+                    {
+                        case Colors.Red:
+                            red = true;
+                            break;
+                        case Colors.Green:
+                            green = true;
+                            break;
+                        case Colors.Yellow:
+                            yellow = true;
+                            break;
+                        case Colors.Blue:
+                            blue = true;
+                            break;
+                        case Colors.Purple:
+                            purple = true;
+                            break;
+                    }
+                }
+
+                if(red && green && yellow && blue && purple)
+                {
+                    p.VictoryPoints += 3;
+                }
+
+                //Merveilles : Université et Dracoport +2 VictoryPoints
+            }
+
+            // Tri des joueurs par points de victoires
+            List<Player> SortedList = Players.OrderByDescending(o => o.VictoryPoints).ToList();
+
+            int i = 1;
+            foreach (Player p in SortedList)
+            {
+                Console.WriteLine(i+ ".  Joueur " + p.Id + " : "+p.VictoryPoints+" points");
+                i++;
+            }
+
         }
 
     }

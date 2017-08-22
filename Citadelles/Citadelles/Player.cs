@@ -19,7 +19,7 @@ namespace Citadelles
         private bool _crown;
         private bool _killed;
         private bool _stolen;
-
+        private int _victoryPoints;
 
         public int Coins
         {
@@ -117,6 +117,19 @@ namespace Citadelles
                 _id = value;
             }
         }
+        public int VictoryPoints
+        {
+            get
+            {
+                return _victoryPoints;
+            }
+
+            set
+            {
+                _victoryPoints = value;
+            }
+        }
+
 
         public Player(bool crown)
         {
@@ -128,17 +141,43 @@ namespace Citadelles
             Stolen = false;
             _nbplayers++;
             _id = _nbplayers;
+            _victoryPoints = 0;
         }
 
-        // A Modifier !
-        // prend une carte au hasard et la met dans la main
-        // Mais :  Doit prendre 2 cartes, en choisir 1 et mettre l'autre sous la pioche
+
+        // Le joueur pioche 2 cartes, en met 1 dans sa main et met l'autre sous la pioche
         public void Draw(List<Card> cards)
         {
+            Console.Clear();
+            Console.WriteLine(ToString());
+
             Random rnd = new Random();
-            int index = rnd.Next(cards.Count);
-            Hand.Add(cards.ElementAt(index));
-            cards.RemoveAt(index);
+            int index1 = rnd.Next(cards.Count);
+            Card c1 = cards.ElementAt(index1);
+            int index2 = rnd.Next(cards.Count);
+            Card c2 = cards.ElementAt(index2);
+
+            ConsoleKeyInfo crk;
+            Console.WriteLine("Choisissez la carte que vous souhaitez garder :");
+            Console.WriteLine(c1);
+            Console.WriteLine(c2);
+            do
+            {
+                crk = Console.ReadKey();
+            } while (!(new[] { "NumPad1", "NumPad2" }.Contains(crk.Key.ToString())));
+
+            Console.Clear();
+            if (crk.Key.ToString() == "NumPad1")
+            {
+                Hand.Add(cards.ElementAt(index1));
+                cards.RemoveAt(index1);
+            }
+            else
+            {
+                Hand.Add(cards.ElementAt(index2));
+                cards.RemoveAt(index2);
+            }
+            
         }
 
         // Le joueur chosit un des roles restant
@@ -213,6 +252,15 @@ namespace Citadelles
             else
             {
                 _coins += 2;
+            }
+
+            //Poser des cartes sur le board
+
+            // Gagné ?
+            if (Board.Count == Game.NbCardsOnBoard && !Game.Winner)
+            {
+                Game.Winner = true;
+                _victoryPoints += 2;
             }
 
         }

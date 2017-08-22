@@ -13,6 +13,8 @@ namespace Citadelles.Roles
 
         }
 
+        // Les quartiers Green sur son Board lui rapportent 1 PO
+        // Gagne 1 PO
         public override void Effect()
         {
             Player p = Game.GetRole(6);

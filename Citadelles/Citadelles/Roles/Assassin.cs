@@ -14,6 +14,7 @@ namespace Citadelles.Roles
             
         }
 
+        // Assassine un role, le role passe son tour
         public override void Effect()
         {
             Console.WriteLine("Choisissez le role que vous voulez assassiner :");
@@ -38,7 +39,12 @@ namespace Citadelles.Roles
             } while (!(roles.Contains(crk.Key.ToString())));
 
             int rank = int.Parse(crk.Key.ToString().Remove(0, 6));
-            Game.GetRole(rank).Killed=true;
+            Player p = Game.GetRole(rank);
+
+            if (p != null)
+            {
+                p.Killed = true;
+            }
 
         }
     }

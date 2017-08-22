@@ -13,6 +13,7 @@ namespace Citadelles.Roles
 
         }
 
+        // Vole les PO d'un role au début du tour du role en question
         public override void Effect()
         {
             // A Faire : récupérer le role assassinné

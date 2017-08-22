@@ -13,6 +13,8 @@ namespace Citadelles.Roles
 
         }
 
+        // Les quartiers RED sur son Board lui rapportent 1 PO
+        // Détruit un quartier
         public override void Effect()
         {
             Player p = Game.GetRole(8);

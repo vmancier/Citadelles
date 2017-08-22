@@ -13,6 +13,8 @@ namespace Citadelles.Roles
 
         }
 
+        //Échange ses cartes avec un joueur ou
+        //Échange des cartes de sa main avec la pioche.
         public override void Effect()
         {
 
