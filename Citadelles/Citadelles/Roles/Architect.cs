@@ -15,7 +15,8 @@ namespace Citadelles.Roles
 
         public override void Effect()
         {
-
+            Game.GetRole(7).Draw(Game.Library);
+            Game.GetRole(7).Draw(Game.Library);
         }
     }
 }

@@ -15,7 +15,15 @@ namespace Citadelles.Roles
 
         public override void Effect()
         {
+            Player p = Game.GetRole(4);
 
+            foreach (Card c in p.Board)
+            {
+                if (c.Color == Colors.Yellow)
+                {
+                    p.Coins++;
+                }
+            }
         }
     }
 }

@@ -288,7 +288,7 @@ namespace Citadelles
         }
 
         //Récupère le joueur avec le role correspondant
-        public Player GetRole(int rankRole)
+        public static Player GetRole(int rankRole)
         {
             foreach(Player player in Players)
             {

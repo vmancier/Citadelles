@@ -220,6 +220,7 @@ namespace Citadelles
         public override string ToString()
         {
             string text = "*** Joueur " + _id + " ***\n";
+            text += _role.Name + "\n";
             text += "- PO : " + _coins + "\n";
             text += "-- Main --\n";
             foreach (Card c in _hand)
