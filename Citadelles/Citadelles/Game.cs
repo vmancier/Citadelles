@@ -193,7 +193,13 @@ namespace Citadelles
                 }
 
                 //Tranfert de couronne
-                 
+                Player king = GetRole(4);
+                if (king != null)
+                {
+                    _players.ElementAt(GetCrown()).Crown = false;
+                    king.Crown = true;
+                }
+
                 Console.Clear();
             }
             while(PlayingGame());
