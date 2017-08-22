@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Citadelles.Roles
 {
-    class Warlord : Role
+    public class Warlord : Role
     {
         public Warlord() : base(8, "Condottiere")
         {

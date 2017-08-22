@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Citadelles
 {
-    abstract class Role
+    public abstract class Role
     {
         private int _rank;
         private string _name;
@@ -43,6 +43,12 @@ namespace Citadelles
         }
 
         public abstract void Effect();
+
+        public override string ToString()
+        {
+            string text = _rank+". "+ _name;
+            return text;
+        }
 
     }
 }

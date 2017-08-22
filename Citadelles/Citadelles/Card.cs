@@ -8,7 +8,7 @@ using Citadelles.Roles;
 namespace Citadelles
 {
     public enum Colors {Blue, Red, Yellow, Green, Purple};
-    class Card
+    public class Card
     {
         private Colors _color;
         private int _cost;

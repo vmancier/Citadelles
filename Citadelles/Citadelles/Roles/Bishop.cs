@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Citadelles.Roles
 {
-    class Bishop : Role
+    public class Bishop : Role
     {
         public Bishop() : base(5, "Évêque")
         {

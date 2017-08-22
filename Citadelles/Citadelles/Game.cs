@@ -9,15 +9,52 @@ namespace Citadelles
 {
     public class Game
     {
-        private List<Card> _library;
-        private List<Player> _players;
-        private List<Role> _roles;
+        private static List<Card> _library;
+        private static List<Player> _players;
+        private static List<Role> _roles;
         private int _nbPlayers;
+
+        public static List<Card> Library
+        {
+            get
+            {
+                return _library;
+            }
+
+            set
+            {
+                _library = value;
+            }
+        }
+        public static List<Player> Players
+        {
+            get
+            {
+                return _players;
+            }
+
+            set
+            {
+                _players = value;
+            }
+        }
+        public static List<Role> Roles
+        {
+            get
+            {
+                return _roles;
+            }
+
+            set
+            {
+                _roles = value;
+            }
+        }
 
         public Game(int nbPlayers)
         {
             _nbPlayers = nbPlayers;
-            _roles = new List<Role>();
+            Roles = new List<Role>();
 
             Init();
             Play();
@@ -31,11 +68,11 @@ namespace Citadelles
             LoadLibrary();
 
             //Création des joueurs
-            _players = new List<Player>();
-            _players.Add(new Player(true));//Assignation de la couronne au premier tour
+            Players = new List<Player>();
+            Players.Add(new Player(true));//Assignation de la couronne au premier tour
             for (int i = 1; i < _nbPlayers; i++)
             {
-                _players.Add(new Player(false));
+                Players.Add(new Player(false));
             }
 
             //Distribution des cartes
@@ -43,7 +80,7 @@ namespace Citadelles
             {
                 for (int j = 0; j < _nbPlayers; j++)
                 {
-                    _players.ElementAt(j).Draw(_library);
+                    Players.ElementAt(j).Draw(Library);
                 }
             }
 
@@ -52,82 +89,82 @@ namespace Citadelles
         //Initialise le paquet de cartes
         public void LoadLibrary()
         {
-            _library = new List<Card>();
+            Library = new List<Card>();
 
             //Cartes Bleues
             for (int i = 0; i < 3; i++)
             {
-                _library.Add(Card.Temple());
+                Library.Add(Card.Temple());
             }
             for (int i = 0; i < 4; i++)
             {
-                _library.Add(Card.Eglise());
+                Library.Add(Card.Eglise());
             }
             for (int i = 0; i < 3; i++)
             {
-                _library.Add(Card.Monastere());
+                Library.Add(Card.Monastere());
             }
             for (int i = 0; i < 2; i++)
             {
-                _library.Add(Card.Cathedrale());
+                Library.Add(Card.Cathedrale());
             }
 
             //Cartes Jaunes
             for (int i = 0; i < 5; i++)
             {
-                _library.Add(Card.Manoir());
+                Library.Add(Card.Manoir());
             }
             for (int i = 0; i < 4; i++)
             {
-                _library.Add(Card.Chateau());
+                Library.Add(Card.Chateau());
             }
             for (int i = 0; i < 2; i++)
             {
-                _library.Add(Card.Palais());
+                Library.Add(Card.Palais());
             }
 
             //Cartes Vertes
             for (int i = 0; i < 5; i++)
             {
-                _library.Add(Card.Taverne());
+                Library.Add(Card.Taverne());
             }
             for (int i = 0; i < 3; i++)
             {
-                _library.Add(Card.Echoppe());
+                Library.Add(Card.Echoppe());
             }
             for (int i = 0; i < 4; i++)
             {
-                _library.Add(Card.Marche());
+                Library.Add(Card.Marche());
             }
             for (int i = 0; i < 3; i++)
             {
-                _library.Add(Card.Comptoir());
+                Library.Add(Card.Comptoir());
             }
             for (int i = 0; i < 3; i++)
             {
-                _library.Add(Card.Port());
+                Library.Add(Card.Port());
             }
             for (int i = 0; i < 2; i++)
             {
-                _library.Add(Card.HotelDeVille());
+                Library.Add(Card.HotelDeVille());
             }
 
             //Cartes Rouges
             for (int i = 0; i < 3; i++)
             {
-                _library.Add(Card.TourDeGuet());
+                Library.Add(Card.TourDeGuet());
             }
             for (int i = 0; i < 3; i++)
             {
-                _library.Add(Card.Prison());
+                Library.Add(Card.Prison());
             }
             for (int i = 0; i < 3; i++)
             {
-                _library.Add(Card.Caserne());
+                Library.Add(Card.Caserne());
             }
             for (int i = 0; i < 2; i++)
             {
-                _library.Add(Card.Forteresse());
+                Library.Add(Card.Forteresse());
             }
 
             //Merveilles
@@ -144,23 +181,45 @@ namespace Citadelles
                 BanRole();
                 DraftRoles();
 
+                //Les joueurs jouent selon l'ordre des roles
+                for (int i = 1; i < 9; i++)
+                {
+                    Player p = GetRole(i);
+                    if (p != null && !p.Killed)
+                    {
+                        p.Turn();
+                    }
+                    
+                }
 
+                //Tranfert de couronne
+                 
+                Console.Clear();
             }
             while(PlayingGame());
+
+
         }
 
         //Initialise les roles au début du tour 
         public void LoadRoles()
         {
-            _roles.Clear();
-            _roles.Add(new Assassin());
-            _roles.Add(new Thief());
-            _roles.Add(new Magician());
-            _roles.Add(new King());
-            _roles.Add(new Bishop());
-            _roles.Add(new Merchant());
-            _roles.Add(new Architect());
-            _roles.Add(new Warlord());
+            Roles.Clear();
+            foreach (Player player in Players)
+            {
+                player.Role = null;
+                player.Killed = false;
+                player.Stolen = false;
+            }
+
+            Roles.Add(new Assassin());
+            Roles.Add(new Thief());
+            Roles.Add(new Magician());
+            Roles.Add(new King());
+            Roles.Add(new Bishop());
+            Roles.Add(new Merchant());
+            Roles.Add(new Architect());
+            Roles.Add(new Warlord());
         }
 
         //Vérifie les conditions de victoire
@@ -171,7 +230,7 @@ namespace Citadelles
 
             int nbCardsOnBoard = 8;
 
-            foreach(Player player in _players)
+            foreach(Player player in Players)
             {
                 if(player.Board.Count == nbCardsOnBoard)
                 {
@@ -186,17 +245,17 @@ namespace Citadelles
         public void BanRole()
         {
             Random rnd = new Random();
-            int index = rnd.Next(_roles.Count);
-            _roles.RemoveAt(index);
+            int index = rnd.Next(Roles.Count);
+            Roles.RemoveAt(index);
         }
 
         //Cherche l'index du joueur avec la couronne
         public int GetCrown()
         {
             int crownIndex = 0;
-            for (int i = 0; i < _players.Count; i++)
+            for (int i = 0; i < Players.Count; i++)
             {
-                if (_players.ElementAt(i).Crown)
+                if (Players.ElementAt(i).Crown)
                 {
                     crownIndex = i;
                 }
@@ -210,16 +269,29 @@ namespace Citadelles
         {
             int crownIndex = GetCrown();
 
-            for (int i = crownIndex; i < _players.Count; i++)
+            for (int i = crownIndex; i < Players.Count; i++)
             {
-                _players.ElementAt(i).ChooseRole();
+                Players.ElementAt(i).ChooseRole(Roles);
 
             }
 
             for (int i = 0; i < crownIndex; i++)
             {
-                _players.ElementAt(i).ChooseRole();
+                Players.ElementAt(i).ChooseRole(Roles);
             }
+        }
+
+        //Récupère le joueur avec le role correspondant
+        public Player GetRole(int rankRole)
+        {
+            foreach(Player player in Players)
+            {
+                if(player.Role.Rank== rankRole)
+                {
+                    return player;
+                }
+            }
+            return null;
         }
 
     }
